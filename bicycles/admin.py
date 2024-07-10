@@ -9,7 +9,8 @@ class PriceTypeAdmin(admin.ModelAdmin):
 
 
 class BicycleAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'description', 'rental_cost')
+    list_display = ('id', 'name', 'description', 'rental_cost',
+                    'status',)
     empty_value_display = '-пусто-'
 
 

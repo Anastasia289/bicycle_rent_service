@@ -41,7 +41,7 @@ class BicycleStatus(models.TextChoices):
     """Статусы для велосипедов."""
     AVAILABLE = 'availible', _('Доступен')
     RENTED = 'rented', _('Арендован')
-    NOTAVAILABLE = 'notavailible', _('Недоступен')
+    NOTAVAILABLE = 'notavailible', _('Недоступен по какой-то причине') 
 
 
 class Bicycle(models.Model):
@@ -54,6 +54,9 @@ class Bicycle(models.Model):
         max_length=MAX_DESCRIPTION_LENGTH,
         null=True,
     )
+    status = models.CharField('Статус', max_length=MAX_NAME_LENGTH,
+                              choices=BicycleStatus.choices,
+                              default=BicycleStatus.AVAILABLE)
 
     rental_cost = models.ForeignKey(
         PriceType,
