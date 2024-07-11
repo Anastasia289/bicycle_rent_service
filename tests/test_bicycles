@@ -1,0 +1,8 @@
+import pytest
+from model_bakery import baker
+
+from bucycles.models import Bicycle
+
+@pytest.fixture
+def available_bicycles():
+    return baker.make(Bicycle, status=BicycleStatus.AVAILABLE, _quantity=3)

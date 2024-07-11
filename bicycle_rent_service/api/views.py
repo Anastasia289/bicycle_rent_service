@@ -27,11 +27,11 @@ class CustomUserViewSet(UserViewSet):
     search_fields = ('^email',)
     ordering_fields = ('id', )
     serializer_class = CustomUserSerializer
-    http_method_names = ['get', 'post', 'patch']
+    http_method_names = ['get', 'post',]
 
     @action(
         detail=True,
-        methods=['patch', ],
+        methods=['post', ],
         permission_classes=[IsAuthenticated])
     def return_bicycle(self, request, id):
         """Вернуть велосипед."""
@@ -44,12 +44,11 @@ class CustomUserViewSet(UserViewSet):
         bicycle = get_object_or_404(RentedBicycle,
                                     client_id=self.kwargs.get('id'),
                                     status='rented')
-        serializer = RentedBicycleSerializer(data={
-            'id': bicycle.id,
-            'returned_at': datetime.now(),
-            'status': 'returned',
-            # 'bicycle': bicycle.bicycle.id #
-            },context={'request': request},partial=True)
+        re = datetime.now()
+        serializer = RentedBicycleSerializer(
+            bicycle, data={'client': request.user.id, 'bicycle': bicycle.bicycle.id,
+                           'status': 'returned', 'returned_at': re},
+            context={'request': request})
 
         serializer.is_valid(raise_exception=True)
         serializer.save()

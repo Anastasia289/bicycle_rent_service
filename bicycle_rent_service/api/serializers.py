@@ -55,18 +55,15 @@ class RentedBicycleSerializer(serializers.ModelSerializer):
                   'price_per_hour', 'rented_time_in_hours')
 
     def validate(self, data):
-        if data['returned_at']:
-            if data['returned_at']<=data['rented_at']:
-                raise serializers.ValidationError(
-                    'Время аренды не может быть нулевым или отрицательным.')
-        if data['bicycle'].status != 'availible':
-            raise serializers.ValidationError(
-                'Этот велосипед арендовать нельзя, выберите другой')
-        if RentedBicycle.objects.filter(
-            client=self.context.get(
-                'request').user, status='rented').exists():
-            raise serializers.ValidationError(
-                'Вы не можете арендовать несколько велосипедов одновременно')
+
+        # if data['bicycle'].status != 'availible':
+        #     raise serializers.ValidationError(
+        #         'Этот велосипед арендовать нельзя, выберите другой')
+        # if RentedBicycle.objects.filter(
+        #     client=self.context.get(
+        #         'request').user, status='rented').exists():
+        #     raise serializers.ValidationError(
+        #         'Вы не можете арендовать несколько велосипедов одновременно')
         if RentedBicycle.objects.filter(
             client=self.context.get(
                 'request').user, status='damaged').exists():
@@ -109,9 +106,7 @@ class RentedBicycleSerializer(serializers.ModelSerializer):
         rented_bicycle = RentedBicycle.objects.create(**validated_data)
         return rented_bicycle
 
-    def update(self, rented_bicycle, validated_data):
+    def update(self, rented_bicycle, data):
         bicycle = self.initial_data.get('bicycle')
         self.bicycle_status_availible(bicycle)
-        returned_at = datetime.now()
-        status = 'returned'
-        return super().update(rented_bicycle, validated_data)
+        return super().update(rented_bicycle, data)
