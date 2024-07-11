@@ -3,8 +3,9 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from bicycles.constants import (MAX_DESCRIPTION_LENGTH, MAX_HOUR_PRICE,
-                                MAX_NAME_LENGTH, MIN_HOUR_PRICE)
+from bicycle_rent_service.constants import (MAX_DESCRIPTION_LENGTH,
+                                            MAX_HOUR_PRICE, MAX_NAME_LENGTH,
+                                            MIN_HOUR_PRICE)
 
 User = get_user_model()
 
@@ -41,7 +42,7 @@ class BicycleStatus(models.TextChoices):
     """Статусы для велосипедов."""
     AVAILABLE = 'availible', _('Доступен')
     RENTED = 'rented', _('Арендован')
-    NOTAVAILABLE = 'notavailible', _('Недоступен по какой-то причине') 
+    NOTAVAILABLE = 'notavailible', _('Недоступен по какой-то причине')
 
 
 class Bicycle(models.Model):
@@ -97,6 +98,9 @@ class RentedBicycle(models.Model):
         verbose_name='Когда возвращен',
         null=True, blank=True,
     )
+    final_price = models.FloatField('Получившаяся сумма',
+                                    null=True, blank=True,
+                                    )
 
     class Meta:
         verbose_name = 'Арендованный велосипед'

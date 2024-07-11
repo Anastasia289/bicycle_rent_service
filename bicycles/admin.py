@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import PriceType, Bicycle, RentedBicycle
+from .models import Bicycle, PriceType, RentedBicycle
 
 
 class PriceTypeAdmin(admin.ModelAdmin):
@@ -16,7 +16,7 @@ class BicycleAdmin(admin.ModelAdmin):
 
 class RentedBicycleAdmin(admin.ModelAdmin):
     list_display = ('id', 'client', 'bicycle', 'rented_at',
-                    'status', 'returned_at')
+                    'status', 'returned_at', 'final_price')
     empty_value_display = '-пусто-'
 
 

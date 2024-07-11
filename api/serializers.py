@@ -1,26 +1,27 @@
+import datetime
+import math
+
 from djoser.serializers import UserCreateSerializer, UserSerializer
 from rest_framework import serializers
 from rest_framework.fields import SerializerMethodField
-# from api import serializers
+
+from bicycle_rent_service.constants import SEC_IN_HOUR
+from bicycles.models import Bicycle, RentedBicycle
 from users.models import CustomUser
-
-from bicycles.models import (PriceType, Bicycle, RentedBicycle) 
-
-MIN_PASSWORD_LENGTH = 5
 
 
 class CustomUserSerializer(UserSerializer):
     """Сериализатор для управления пользователями."""
 
-    # is_subscribed = SerializerMethodField()
+    rented_bicycles = SerializerMethodField()
 
     class Meta:
         model = CustomUser
-        fields = ('id', 'username', 'email',)
+        fields = ('id', 'username', 'email', 'rented_bicycles',)
 
-    # def get_rented_bicycles(self, obj):
-    #     return RentedBicycle.objects.filter(
-    #        ).
+    def get_rented_bicycles(self, obj):
+        rented_bicycles = RentedBicycle.objects.filter(client_id=obj).all()
+        return RentedBicycleSerializer(rented_bicycles, many=True).data
 
 
 class CustomUserCreateSerializer(UserCreateSerializer):
@@ -31,37 +32,33 @@ class CustomUserCreateSerializer(UserCreateSerializer):
         fields = ('id', 'username', 'email', 'password', )
 
 
-class PriceTypeSerializer(serializers.ModelSerializer):
-    """Сериализатор для избранного."""
-
-    class Meta:
-        model = PriceType
-        fields = ('id', 'name', 'price', )
-
-
 class BicycleSerializer(serializers.ModelSerializer):
-    """Сериализатор для избранного."""
-    is_rented = SerializerMethodField()
+    """Сериализатор для просмотра велосипедов."""
 
     class Meta:
         model = Bicycle
         fields = ('id', 'name', 'description', 'rental_cost',
-                  'status', 'is_rented')
-
-    def get_is_rented(self, obj):
-        return RentedBicycle.objects.filter(
-            bicycle=obj, status='rented').exists()
+                  'status',)
 
 
 class RentedBicycleSerializer(serializers.ModelSerializer):
     """Сериализатор для аренды велосипеда."""
 
+    rented_time_in_hours = SerializerMethodField()
+    price_per_hour = SerializerMethodField()
+    final_price = SerializerMethodField()
+
     class Meta:
         model = RentedBicycle
         fields = ('id', 'client', 'bicycle', 'rented_at',
-                  'status', 'returned_at')
+                  'status', 'returned_at', 'final_price',
+                  'price_per_hour', 'rented_time_in_hours')
 
     def validate(self, data):
+        if data['returned_at']:
+            if data['returned_at']<=data['rented_at']:
+                raise serializers.ValidationError(
+                    'Время аренды не может быть нулевым или отрицательным.')
         if data['bicycle'].status != 'availible':
             raise serializers.ValidationError(
                 'Этот велосипед арендовать нельзя, выберите другой')
@@ -79,23 +76,42 @@ class RentedBicycleSerializer(serializers.ModelSerializer):
                 'Для примирения обратитесь к администратору. ')
         return data
 
-    def bicycle_status_rented(self, id):
-        bicycle = Bicycle.objects.get(name=id)
-        bicycle.status = 'rented'
+    def bicycle_status_rented(self, b):
+        """Меняем статус велосипеда на 'арендован'."""
+        Bicycle.objects.filter(id=b).update(status='rented')
+
+    def bicycle_status_availible(self, b):
+        """Меняем статус велосипеда на 'доступен'."""
+        Bicycle.objects.filter(id=b).update(status='availible')
+
+    def get_rented_time_in_hours(self, obj):
+        """Расчет количества часов, на которые был арендован
+        велосипед. Аренда почасовая. """
+        if obj.returned_at:
+            timedelta = obj.returned_at-obj.rented_at
+            return math.ceil(timedelta.total_seconds()/SEC_IN_HOUR)
+
+    def get_price_per_hour(self, obj):
+        """Показать стоимость в час"""
+        price = obj.bicycle.rental_cost.price
+        return price
+
+    def get_final_price(self, obj):
+        """Расчет стоимости аренды на основе времени."""
+        price = self.get_price_per_hour(obj)
+        hours = self.get_rented_time_in_hours(obj)
+        if hours:
+            return price*hours
 
     def create(self, validated_data):
-        # bicycle = self.context.get('bicycle')
-        # self.bicycle_status_rented(bicycle)
-        # validated_data['bicycle'].status='rented'
+        bicycle = self.initial_data.get('bicycle')
+        self.bicycle_status_rented(bicycle)
         rented_bicycle = RentedBicycle.objects.create(**validated_data)
-        # validated_data['bicycle'].status = 'rented'
-
         return rented_bicycle
 
-    # def update(self, recipe, validated_data):
-
-    #     recipe.tags.set(self.initial_data.get('tags'))
-    #     RecipyIngredients.objects.filter(recipes=recipe).all().delete()
-    #     ingredients = validated_data.pop('recipy_ingredient')
-    #     self.create_recipy_ingredients(ingredients, recipe)
-    #     return super().update(recipe, validated_data)
+    def update(self, rented_bicycle, validated_data):
+        bicycle = self.initial_data.get('bicycle')
+        self.bicycle_status_availible(bicycle)
+        returned_at = datetime.now()
+        status = 'returned'
+        return super().update(rented_bicycle, validated_data)

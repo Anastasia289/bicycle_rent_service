@@ -1,36 +1,105 @@
-backend сервиса аренды велосипедов
+#  Сервис аренды велосипедов
 
+## Описание:
+Здесь реализован backend для сервиса аренды велосипедов. Пользователь может зарегистрироваться, авторизоваться, просмотреть список доступных велосипедов, арендовать понравившийся, вернуть велосипед, а также посмотреть свою историю аренды. 
 
+## Ссылки на проект:
+[Backend развернут здесь ](https://)   
+[Документация к проекту ](https://)  
+[Схема базы данных ](https://)
 
-http://127.0.0.1:8000/api/v1/jwt/create/
+##  Примеры запросов 
+**Получение токена**
+
+```
+POST api/v1/jwt/create/
+Request: 
 {
   "email": "admin@ad.ru",
   "password": "admin"
 }
 
+``` 
+
+**Просмотр информации о пользователе.**
+
+```
+GET api/v1/users/{id}
+Response:
 {
-    "refresh": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTcyMDcwODQ5NiwiaWF0IjoxNzIwNjIyMDk2LCJqdGkiOiJmZTRlMzhkOWYxNGY0MWU1ODNjZDU5ZGU1YmU3ODk3ZiIsInVzZXJfaWQiOjF9.q3fmrrSWeSZDdqgWQUaOSmQ9lpwLI_iS7Glxg09LAig",
-    "access": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzIwNzA4NDk2LCJpYXQiOjE3MjA2MjIwOTYsImp0aSI6Ijk2Y2NlYTcyYzIwNjQ4NjE5NzJhM2YxMzdmMGJhYTIxIiwidXNlcl9pZCI6MX0.t_kgKGIE-EHZIB6vJZTg3amLJtI5CTJzvdCuxIWu36I"
-}
-
-
-
-
-http://127.0.0.1:8000/api/v1/users/
-
-get 
-{
-    "username": "admin",
-    "password": "pbkdf2_sha256$600000$GizABvzoTa5yVAIVvIW4FD$+rObqkmZT2lIXuolgEBD+1WqtSTqoJMpCFhszOm0WQs=",
     "id": 1,
-    "email": "admin@ad.ru"
+    "username": "admin",
+    "email": "admin@ad.ru",
+    "rented_bicycles": [
+        {
+            "id": 16,
+            "client": 1,
+            "bicycle": 2,
+            "rented_at": "2024-07-11T00:22:17.250485+03:00",
+            "status": "returned",
+            "returned_at": "2024-07-11T02:10:13+03:00",
+            "final_price": null,
+            "price_per_hour": 100,
+            "rented_time_in_hours": 2
+        },
+        {
+            "id": 17,
+            "client": 1,
+            "bicycle": 2,
+            "rented_at": "2024-07-11T00:23:47.204608+03:00",
+            "status": "rented",
+            "returned_at": null,
+            "final_price": null,
+            "price_per_hour": 100,
+            "rented_time_in_hours": null
+        }
+    ]
 }
+``` 
 
-
-post
-
+**Создание пользователя**
+```
+POST api/v1/users/
+Request: 
 {
-    "username": "pupkin",
-    "password": "pypkinqwe",
-    "email": "pupkin@pupkin.ru"
+    "username": "pup",
+    "password": "pypkin!!!!",
+    "email": "pup@pupk.ru"
 }
+Response:
+{
+    "username": "pupqwer",
+    "email": "puqqwep@pupk.ru",
+    "id": 5
+}
+``` 
+
+**Получение списка доступных велосипедов**
+
+```
+GET api/v1/bicycles/
+Response:
+{
+    "username": "pup",
+    "password": "pypkin!!!!",
+    "email": "pup@pupk.ru"
+}
+``` 
+
+**Аренда велосипеда**
+```
+POST api/v1/bicycles/{id}/rent_bicycle/
+``` 
+
+**Возврат велосипеда**
+
+```
+POST api/v1/bicycles/{id}/return_bicycle/
+``` 
+
+##  Запуск проекта
+
+
+
+## Технологии: 
+[![My Skills](https://skillicons.dev/icons?i=py,docker,postgres,django,)](https://skillicons.dev)

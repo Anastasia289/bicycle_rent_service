@@ -2,7 +2,7 @@ from django.contrib.auth.models import AbstractUser
 from django.core.validators import RegexValidator
 from django.db import models
 
-from users.constants import MAX_CHAR_LENGTH, MAX_EMAIL_LENGTH
+from bicycle_rent_service.constants import MAX_CHAR_LENGTH, MAX_EMAIL_LENGTH
 
 
 class CustomUser(AbstractUser):
