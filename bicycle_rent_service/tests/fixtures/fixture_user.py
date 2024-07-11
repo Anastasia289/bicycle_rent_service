@@ -1,17 +1,14 @@
-# from django.contrib.auth import get_user_model
 import pytest
+from django.contrib.auth import get_user_model
 
-# User = get_user_model()
-
+User = get_user_model()
 
 
 @pytest.fixture
-def user(django_user_model):
-    return django_user_model.objects.create_user(
-        username='TestUser', password='1234567qwerty',
-        email='testemail@test.ru'
+def user(User):
+    return User.objects.create_user(
+        username='TestUser', password='12345678!!!', email='testemail@test.ru'
     )
-
 
 
 @pytest.fixture
@@ -25,7 +22,8 @@ def user_2(User):
 @pytest.fixture
 def another_user(User):
     return User.objects.create_user(
-        username='TestUserAnother', password='1234567qwerty', email='testemail2@test.ru'
+        username='TestUserAnother', password='1234567qwerty',
+        email='testemail2@test.ru'
     )
 
 

@@ -1,13 +1,13 @@
-import datetime
+# import datetime
 import math
 
+from bicycles.models import Bicycle, RentedBicycle
 from djoser.serializers import UserCreateSerializer, UserSerializer
 from rest_framework import serializers
 from rest_framework.fields import SerializerMethodField
+from users.models import CustomUser
 
 from bicycle_rent_service.constants import SEC_IN_HOUR
-from bicycles.models import Bicycle, RentedBicycle
-from users.models import CustomUser
 
 
 class CustomUserSerializer(UserSerializer):

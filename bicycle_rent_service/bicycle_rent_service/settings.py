@@ -13,8 +13,16 @@ SECRET_KEY = os.getenv('SECRET_KEY', default=utils.get_random_secret_key())
 
 DEBUG = os.environ.get('DEBUG') == 'True'
 
-# ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '127.0.0.1, localhost').split(', ')
-ALLOWED_HOSTS = ('127.0.0.1', 'localhost')
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '127.0.0.1, localhost').split(', ')
+
+CSRF_TRUSTED_ORIGINS = [
+
+    'http://localhost:9000',
+    'http://localhost:8000',
+    'http://84.252.73.24:9000',
+    'http://84.252.73.24:8000',
+    'https://bicyclesrentservice.myddns.me/'
+]
 
 AUTH_USER_MODEL = 'users.CustomUser'
 
@@ -25,6 +33,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',
     'drf_yasg',
     'rest_framework',
     "rest_framework_simplejwt",
@@ -39,7 +48,9 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -138,3 +149,5 @@ REST_FRAMEWORK = {
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
 }
+
+CORS_ALLOW_ALL_ORIGINS = True

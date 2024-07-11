@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from bicycles.models import Bicycle, RentedBicycle
 from django.shortcuts import get_object_or_404
 # from django_filters.rest_framework import DjangoFilterBackend
 from djoser.views import UserViewSet
@@ -8,8 +9,6 @@ from rest_framework.decorators import action
 from rest_framework.filters import OrderingFilter, SearchFilter
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-
-from bicycles.models import Bicycle, RentedBicycle
 from users.models import CustomUser
 
 from .serializers import (BicycleSerializer, CustomUserSerializer,
@@ -46,7 +45,8 @@ class CustomUserViewSet(UserViewSet):
                                     status='rented')
         re = datetime.now()
         serializer = RentedBicycleSerializer(
-            bicycle, data={'client': request.user.id, 'bicycle': bicycle.bicycle.id,
+            bicycle, data={'client': request.user.id,
+                           'bicycle': bicycle.bicycle.id,
                            'status': 'returned', 'returned_at': re},
             context={'request': request})
 
