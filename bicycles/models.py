@@ -98,9 +98,6 @@ class RentedBicycle(models.Model):
         verbose_name='Когда возвращен',
         null=True, blank=True,
     )
-    final_price = models.FloatField('Получившаяся сумма',
-                                    null=True, blank=True,
-                                    )
 
     class Meta:
         verbose_name = 'Арендованный велосипед'

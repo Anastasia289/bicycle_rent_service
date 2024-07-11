@@ -16,7 +16,7 @@ class BicycleAdmin(admin.ModelAdmin):
 
 class RentedBicycleAdmin(admin.ModelAdmin):
     list_display = ('id', 'client', 'bicycle', 'rented_at',
-                    'status', 'returned_at', 'final_price')
+                    'status', 'returned_at', )
     empty_value_display = '-пусто-'
 
 
