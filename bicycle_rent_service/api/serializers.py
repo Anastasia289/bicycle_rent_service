@@ -85,8 +85,8 @@ class RentedBicycleSerializer(serializers.ModelSerializer):
         """Расчет количества часов, на которые был арендован
         велосипед. Аренда почасовая. """
         if obj.returned_at:
-            timedelta = obj.returned_at-obj.rented_at
-            return math.ceil(timedelta.total_seconds()/SEC_IN_HOUR)
+            timedelta = obj.returned_at - obj.rented_at
+            return math.ceil(timedelta.total_seconds() / SEC_IN_HOUR)
 
     def get_price_per_hour(self, obj):
         """Показать стоимость в час"""
@@ -98,7 +98,7 @@ class RentedBicycleSerializer(serializers.ModelSerializer):
         price = self.get_price_per_hour(obj)
         hours = self.get_rented_time_in_hours(obj)
         if hours:
-            return price*hours
+            return price * hours
 
     def create(self, validated_data):
         bicycle = self.initial_data.get('bicycle')
