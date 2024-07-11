@@ -86,8 +86,9 @@ jobs:
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USER }}
-          key: ${{ secrets.SSH_KEY }}
-          passphrase: ${{ secrets.SSH_PASSPHRASE }}
+          # key: ${{ secrets.SSH_KEY }}
+          # passphrase: ${{ secrets.SSH_PASSPHRASE }}
+          password: ${{ secrets.PASSWORD}}
           script: |
               cd bicycle
               # Перезапускает все контейнеры в Docker Compose
