@@ -48,7 +48,7 @@ class CustomUserViewSet(UserViewSet):
             'id': bicycle.id,
             'returned_at': datetime.now(),
             'status': 'returned',
-            # 'bicycle': bicycle.bicycle.id
+            # 'bicycle': bicycle.bicycle.id #
             },context={'request': request},partial=True)
 
         serializer.is_valid(raise_exception=True)
