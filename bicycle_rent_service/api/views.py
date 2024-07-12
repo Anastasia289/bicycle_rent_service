@@ -2,7 +2,6 @@ from datetime import datetime
 
 from bicycles.models import Bicycle, RentedBicycle
 from django.shortcuts import get_object_or_404
-# from django_filters.rest_framework import DjangoFilterBackend
 from djoser.views import UserViewSet
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
@@ -52,11 +51,6 @@ class CustomUserViewSet(UserViewSet):
 
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        
-        # bicycle.status = 'returned'
-        # bicycle.returned_at = datetime.now()
-        # bicycle.bicycle.status = 'availible'
-        
         return Response('Велосипед возвращен',
                         status=status.HTTP_204_NO_CONTENT)
 

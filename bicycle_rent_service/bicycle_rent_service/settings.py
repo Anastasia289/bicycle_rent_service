@@ -17,13 +17,8 @@ ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '127.0.0.1, localhost').split(', ')
 
 CSRF_TRUSTED_ORIGINS = [
 
-    'http://localhost:9000',
-    'http://localhost:8000',
-    'http://84.252.73.24:9000',
-    'http://84.252.73.24:8000',
     'https://bicyclesrentservice.myddns.me/',
-    'https://bicyclesrentservice.myddns.me',
-    "http://127.0.0.1",
+    'http://127.0.0.1',
 ]
 
 AUTH_USER_MODEL = 'users.CustomUser'
