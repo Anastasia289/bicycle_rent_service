@@ -29,29 +29,40 @@ Response:
 {
     "id": 1,
     "username": "admin",
-    "email": "admin@ad.ru",
+    "email": "admin@admin.ru",
     "rented_bicycles": [
         {
-            "id": 16,
+            "id": 1,
             "client": 1,
             "bicycle": 2,
-            "rented_at": "2024-07-11T00:22:17.250485+03:00",
+            "rented_at": "2024-07-12T12:37:28.832546+03:00",
             "status": "returned",
-            "returned_at": "2024-07-11T02:10:13+03:00",
-            "final_price": null,
-            "price_per_hour": 100,
-            "rented_time_in_hours": 2
+            "returned_at": "2024-07-12T13:02:59.933188+03:00",
+            "final_price": 30,
+            "price_per_hour": 30,
+            "rented_time_in_hours": 1
         },
         {
-            "id": 17,
+            "id": 2,
             "client": 1,
             "bicycle": 2,
-            "rented_at": "2024-07-11T00:23:47.204608+03:00",
-            "status": "rented",
-            "returned_at": null,
-            "final_price": null,
-            "price_per_hour": 100,
-            "rented_time_in_hours": null
+            "rented_at": "2024-07-12T13:03:33.532627+03:00",
+            "status": "returned",
+            "returned_at": "2024-07-12T13:03:52.726078+03:00",
+            "final_price": 30,
+            "price_per_hour": 30,
+            "rented_time_in_hours": 1
+        },
+        {
+            "id": 3,
+            "client": 1,
+            "bicycle": 2,
+            "rented_at": "2024-07-12T13:06:31.568347+03:00",
+            "status": "returned",
+            "returned_at": "2024-07-12T13:06:35.871814+03:00",
+            "final_price": 30,
+            "price_per_hour": 30,
+            "rented_time_in_hours": 1
         }
     ]
 }

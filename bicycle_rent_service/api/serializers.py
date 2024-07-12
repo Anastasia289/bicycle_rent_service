@@ -54,23 +54,46 @@ class RentedBicycleSerializer(serializers.ModelSerializer):
                   'status', 'returned_at', 'final_price',
                   'price_per_hour', 'rented_time_in_hours')
 
-    def validate(self, data):
+    # def validate(self, data):
+        
+    #     if data['bicycle'].status != 'availible':
+    #         raise serializers.ValidationError(
+    #             'Этот велосипед арендовать нельзя, выберите другой')
+    #     if RentedBicycle.objects.filter(
+    #         client=self.context.get(
+    #             'request').user, status='rented').exists():
+    #         raise serializers.ValidationError(
+    #             'Вы не можете арендовать несколько велосипедов одновременно')
+    #     if RentedBicycle.objects.filter(
+    #         client=self.context.get(
+    #             'request').user, status='damaged').exists():
+    #         raise serializers.ValidationError(
+    #             'Ужасный вы человек. '
+    #             'Велосипеды вас боятся и арендоваться не хотят :) '
+    #             'Для примирения обратитесь к администратору. ')
+    #     return data
 
-        # if data['bicycle'].status != 'availible':
-        #     raise serializers.ValidationError(
-        #         'Этот велосипед арендовать нельзя, выберите другой')
-        # if RentedBicycle.objects.filter(
-        #     client=self.context.get(
-        #         'request').user, status='rented').exists():
-        #     raise serializers.ValidationError(
-        #         'Вы не можете арендовать несколько велосипедов одновременно')
-        if RentedBicycle.objects.filter(
-            client=self.context.get(
-                'request').user, status='damaged').exists():
-            raise serializers.ValidationError(
-                'Ужасный вы человек. '
-                'Велосипеды вас боятся и арендоваться не хотят :) '
-                'Для примирения обратитесь к администратору. ')
+    def validate(self, data):
+        if not 'id':
+            if data['bicycle'].status != 'availible':
+                raise serializers.ValidationError(
+                    'Этот велосипед арендовать нельзя, выберите другой')
+            if RentedBicycle.objects.filter(
+                client=self.context.get(
+                    'request').user, status='rented').exists():
+                raise serializers.ValidationError(
+                    'Вы не можете арендовать несколько велосипедов одновременно')
+            if RentedBicycle.objects.filter(
+                client=self.context.get(
+                    'request').user, status='damaged').exists():
+                raise serializers.ValidationError(
+                    'Ужасный вы человек. '
+                    'Велосипеды вас боятся и арендоваться не хотят :) '
+                    'Для примирения обратитесь к администратору. ')
+        if 'returned_at':
+            if 'returned_at' <= 'rented_at':
+                raise serializers.ValidationError(
+                    'Проверьте время аренды')
         return data
 
     def bicycle_status_rented(self, b):
@@ -106,7 +129,7 @@ class RentedBicycleSerializer(serializers.ModelSerializer):
         rented_bicycle = RentedBicycle.objects.create(**validated_data)
         return rented_bicycle
 
-    def update(self, rented_bicycle, data):
+    def update(self, rented_bicycle, validated_data):
         bicycle = self.initial_data.get('bicycle')
         self.bicycle_status_availible(bicycle)
-        return super().update(rented_bicycle, data)
+        return super().update(rented_bicycle, validated_data)

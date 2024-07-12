@@ -52,6 +52,11 @@ class CustomUserViewSet(UserViewSet):
 
         serializer.is_valid(raise_exception=True)
         serializer.save()
+        
+        # bicycle.status = 'returned'
+        # bicycle.returned_at = datetime.now()
+        # bicycle.bicycle.status = 'availible'
+        
         return Response('Велосипед возвращен',
                         status=status.HTTP_204_NO_CONTENT)
 
