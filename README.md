@@ -144,9 +144,7 @@ Cоздать виртуальное окружение:
 
 ## Технологии: 
 - Backend: Django, Django Rest Framework
-- Асинхронность: Celery
 - База данных: PostgreSQL
-- Тестирование: PyTest
 - Контейнеризация: Docker
 
 [![My Skills](https://skillicons.dev/icons?i=py,docker,postgres,django,)](https://skillicons.dev)
