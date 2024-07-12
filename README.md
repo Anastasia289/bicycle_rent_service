@@ -3,6 +3,8 @@
 ## Описание:
 Backend для сервиса аренды велосипедов. Пользователь может зарегистрироваться, авторизоваться, просмотреть список доступных велосипедов, арендовать понравившийся, вернуть велосипед, а также посмотреть свою историю аренды. 
 
+[![Bicycles workflow](https://github.com/Anastasia289/bicycle_rent_service/actions/workflows/main.yml/badge.svg)](https://github.com/Anastasia289/bicycle_rent_service/actions/workflows/main.yml)
+
 ## Ссылки на проект:
 [Backend тут ](https://bicyclesrentservice.myddns.me/)   
 [Документация к проекту тут](https://bicyclesrentservice.myddns.me/swagger/)  
